@@ -4,7 +4,7 @@ import scala.annotation.tailrec
 /**
  * Preface
  * Implement all the things with ???.
- * All implementations must be tail-recursive is possible.
+ * All implementations must be tail-recursive i s possible.
  * Feel free to use internal methods/functions.
  * Feel free to adjust signatures of hacked methods/functions.
  *
@@ -14,7 +14,7 @@ import scala.annotation.tailrec
  * Requirements:
  * a) the function should not use embedded boolean operations
  * b) the functions should be eager
- * c) the function should use `if` expression and `true` and `false` boolean literals 
+ * c) the function should use `if` expression and `true` and `false` boolean literals
  *
  * 2. Fermat Numbers
  * Required task
@@ -37,30 +37,84 @@ import scala.annotation.tailrec
  */
 
 object Homework :
-
+  //===========================================================================
   object `Boolean Operators` :
 
-    def not(b: Boolean): Boolean = ??? // here is my greatest solution
+    def not(b: Boolean): Boolean =
+      if (b)
+        false
+      else
+        true
 
-    def and(left: Boolean, right: Boolean): Boolean = ???
+    end not
+    //===========================================================================
 
-    def or(left: Boolean, right: Boolean): Boolean = ???
+    def and(left: Boolean, right: Boolean): Boolean =
+      if not(left) then
+        false
+      else if not(right) then
+        false
+      else
+        true
+    end and
+    //===========================================================================
+    def or(left: Boolean, right: Boolean): Boolean =
+      if (left)
+        true
+      else if (right)
+        true
+      else
+        false
+    end or
 
   end `Boolean Operators`
-
+  //===========================================================================
   object `Fermat Numbers` :
 
-    val multiplication: (BigInt, BigInt) => BigInt = ???
-
-    val power: (BigInt, BigInt) => BigInt = ???
-
-    val fermatNumber: Int => BigInt = ???
+    val multiplication: (BigInt, BigInt) => BigInt = (Left, Right) => {
+      @tailrec
+      def inner(Left: BigInt, Right: BigInt, n: BigInt): BigInt = {
+        if (Left == 0) n
+        else inner(Left - 1, Right, n + Right)
+      }
+      inner(Left, Right, 0)
+    }
+    //===========================================================================
+    val power: (BigInt, BigInt) => BigInt = (Left, Right) => {
+      @tailrec
+      def inner(Left: BigInt, Right: BigInt, n: BigInt): BigInt = {
+        if (Left == 0) n
+        else inner(Left,Right - 1,multiplication(n,Left))
+      }
+      inner(Left, Right,1)
+    }
+    //===========================================================================
+    val fermatNumber: Int => BigInt = n => power(2,power(2,n)) + 1
 
   end `Fermat Numbers`
-
+  //===========================================================================
   object `Look-and-say Sequence` :
-    val lookAndSaySequenceElement: Int => BigInt = ???
+    def lookandsay(n: BigInt): BigInt = {
+      val list = n.toString.map(_.asDigit).toList
 
+      @tailrec
+      def loop(ints: List[Int], сurrent: BigInt, repeat: Int, times: BigInt): BigInt = {
+        if (ints == List()) (times * 10 + repeat) * 10 + сurrent
+        else {
+          if (ints.head == сurrent) loop(ints.tail, сurrent, repeat + 1, times)
+          else loop(ints.tail, ints.head, 1, (times * 10 + repeat) * 10 + сurrent)
+        }
+      }
+      loop(list.tail, list.head, 1, 0)
+    }
+    val lookAndSaySequenceElement: Int => BigInt = n => {
+      @tailrec
+      def loop(Сurrent: BigInt, Left: BigInt): BigInt = {
+        if (Left == 0) Сurrent
+        else loop(lookandsay(Сurrent), Left - 1)
+      }
+      loop(1, n)
+    }
   end `Look-and-say Sequence`
-
+  //===========================================================================
 end Homework
