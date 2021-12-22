@@ -50,12 +50,10 @@ object Homework :
     //===========================================================================
 
     def and(left: Boolean, right: Boolean): Boolean =
-      if not(left) then
-        false
-      else if not(right) then
-        false
+      if (left)
+        if right then true else false
       else
-        true
+        false
     end and
     //===========================================================================
     def or(left: Boolean, right: Boolean): Boolean =
