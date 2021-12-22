@@ -7,7 +7,8 @@ import karazin.scala.users.group.week2.homework.arbitraries
 import Homework._
 import utils._
 
-object HomeworkSpecification extends Properties("Homework"):
+object HomeworkSpecification extends Properties("Homework") :
+
   import arbitraries.{given Arbitrary[Int], given Arbitrary[Rational]}
 
   property("throw exception due to zero denominator") = forAll { (numer: Int) ⇒
@@ -38,7 +39,7 @@ object HomeworkSpecification extends Properties("Homework"):
   }
 
   property("less or equal") = forAll { (left: Rational, right: Rational) =>
-    (left <= right) == ( left < right || left == right)
+    (left <= right) == (left < right || left == right)
   }
 
   property("greater") = forAll { (left: Rational, right: Rational) =>
@@ -46,28 +47,28 @@ object HomeworkSpecification extends Properties("Homework"):
   }
 
   property("greater or equal") = forAll { (left: Rational, right: Rational) =>
-    (left >= right) == ( left > right || left == right)
+    (left >= right) == (left > right || left == right)
   }
-  val SMALL_NUMBER = 0.00000001
+
   property("negation") = forAll { (rational: Rational) =>
     -rational == Rational(-rational.numer, rational.denom)
   }
 
   property("addition") = forAll { (left: Rational, right: Rational) =>
-    abs((left + right).toDouble - (left.toDouble + right.toDouble)) <= SMALL_NUMBER
+    abs((left + right).toDouble - (left.toDouble + right.toDouble)) <= 0.000000000001
   }
 
   property("subtraction") = forAll { (left: Rational, right: Rational) =>
-    abs((left - right).toDouble - (left.toDouble - right.toDouble)) <= SMALL_NUMBER
+    abs((left - right).toDouble - (left.toDouble - right.toDouble)) <= 0.000000000001
   }
 
   property("multiplication") = forAll { (left: Rational, right: Rational) =>
-    abs((left * right).toDouble - (left.toDouble * right.toDouble)) <= SMALL_NUMBER
+    abs((left * right).toDouble - (left.toDouble * right.toDouble)) <= 0.000000000001
   }
 
   property("division") = forAll { (left: Rational, numer: Int, denom: Int) =>
     val right = Rational(if numer == 0 then 1 else numer, abs(denom) + 1)
-    abs((left / right).toDouble - (left.toDouble / right.toDouble)) <= SMALL_NUMBER
+    abs((left / right).toDouble - (left.toDouble / right.toDouble)) <= 0.000000000001
   }
 
   property("division by zero") = forAll { (left: Rational, int: Int) =>

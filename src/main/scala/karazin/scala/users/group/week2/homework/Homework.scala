@@ -40,7 +40,7 @@ object Homework:
     infix def unary_- : Rational = Rational(-this.numer, this.denom)
 
     @targetName("substraction")
-    infix def -(that: Rational): Rational =  this + -that
+    infix def -(that: Rational): Rational = this + -that
 
     @targetName("multiplication")
     infix def *(that: Rational): Rational = Rational(this.numer * that.numer, this.denom * that.denom)
@@ -54,7 +54,9 @@ object Homework:
       then Rational(-(this.numer * that.denom), abs(newDenom))
       else Rational(this.numer * that.denom, this.denom * that.numer)
     }
+
     def toDouble: Double = this.numer.toDouble / this.denom.toDouble
+
     override def toString: String = s"${this.numer}/${this.denom}"
 
     private def gcd(a: Int, b: Int): Int =
