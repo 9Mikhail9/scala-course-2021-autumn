@@ -1,6 +1,7 @@
 package karazin.scala.users.group.week1.homework
 
 import scala.annotation.tailrec
+
 /**
  * Preface
  * Implement all the things with ???.
@@ -36,9 +37,9 @@ import scala.annotation.tailrec
  * For more details @see https://en.wikipedia.org/wiki/Kolakoski_sequence
  */
 
-object Homework :
+object Homework:
   //===========================================================================
-  object `Boolean Operators` :
+  object `Boolean Operators`:
 
     def not(b: Boolean): Boolean =
       if (b)
@@ -55,6 +56,7 @@ object Homework :
       else
         false
     end and
+
     //===========================================================================
     def or(left: Boolean, right: Boolean): Boolean =
       if (left)
@@ -66,8 +68,9 @@ object Homework :
     end or
 
   end `Boolean Operators`
+
   //===========================================================================
-  object `Fermat Numbers` :
+  object `Fermat Numbers`:
 
     val multiplication: (BigInt, BigInt) => BigInt = (Left, Right) => {
       @tailrec
@@ -75,44 +78,51 @@ object Homework :
         if (Left == 0) n
         else inner(Left - 1, Right, n + Right)
       }
+
       inner(Left, Right, 0)
     }
     //===========================================================================
-    val power: (BigInt, BigInt) => BigInt = (Left, Right) => {
+    val power: (BigInt, BigInt) => BigInt = (left, right) => {
       @tailrec
-      def inner(Left: BigInt, Right: BigInt, n: BigInt): BigInt = {
-        if (Left == 0) n
-        else inner(Left,Right - 1,multiplication(n,Left))
+      def inner(left: BigInt, right: BigInt, ant: BigInt): BigInt = {
+        if (right == 0) ant
+        else inner(left, right - 1, multiplication(ant, left))
       }
-      inner(Left, Right,1)
+
+      inner(left, right, 1)
     }
     //===========================================================================
-    val fermatNumber: Int => BigInt = n => power(2,power(2,n)) + 1
+    val fermatNumber: Int => BigInt = n => {power(2, power(2, n)) + 1}
 
-  end `Fermat Numbers`
+
   //===========================================================================
-  object `Look-and-say Sequence` :
-    def lookandsay(n: BigInt): BigInt = {
-      val list = n.toString.map(_.asDigit).toList
+  object `Look-and-say Sequence`:
+    def toLookAndSay(num: BigInt): BigInt = {
+      // converting n to list for convenience
+      val nList = num.toString.map(_.asDigit).toList
 
       @tailrec
-      def loop(ints: List[Int], сurrent: BigInt, repeat: Int, times: BigInt): BigInt = {
-        if (ints == List()) (times * 10 + repeat) * 10 + сurrent
-        else {
-          if (ints.head == сurrent) loop(ints.tail, сurrent, repeat + 1, times)
-          else loop(ints.tail, ints.head, 1, (times * 10 + repeat) * 10 + сurrent)
+      def inner(ints: List[Int], current: BigInt, cnt: Int, accept: BigInt): BigInt = ints match {
+        case List() => (accept * 10 + cnt) * 10 + current
+        case h :: t => {
+          if (h == current) inner(t, current, cnt + 1, accept)
+          else inner(t, h, 1, (accept * 10 + cnt) * 10 + current)
         }
       }
-      loop(list.tail, list.head, 1, 0)
+
+      inner(nList.tail, nList.head, 1, 0)
     }
-    val lookAndSaySequenceElement: Int => BigInt = n => {
+
+    val lookAndSaySequenceElement: Int => BigInt = num => {
       @tailrec
-      def loop(Сurrent: BigInt, Left: BigInt): BigInt = {
-        if (Left == 0) Сurrent
-        else loop(lookandsay(Сurrent), Left - 1)
+      def loop(current: BigInt, left: BigInt): BigInt = left match {
+        case 0 => current
+        case _ => loop(toLookAndSay(current), left - 1)
       }
-      loop(1, n)
+
+      loop(1, num)
     }
+
   end `Look-and-say Sequence`
   //===========================================================================
 end Homework

@@ -5,7 +5,7 @@ import Prop.{forAll, propBoolean}
 import Homework._
 import karazin.scala.users.group.week1.homework.arbitraries
 
-object HomeworkSpecification extends Properties("Homework"):
+object HomeworkSpecification extends Properties("Homework") :
 
   include(BooleanOperatorsSpecification)
   include(FermatNumbersSpecification)
@@ -13,7 +13,8 @@ object HomeworkSpecification extends Properties("Homework"):
 
 end HomeworkSpecification
 
-object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
+object BooleanOperatorsSpecification extends Properties("Boolean Operators") :
+
   import `Boolean Operators`._
 
   property("not") = forAll { (b: Boolean) =>
@@ -22,19 +23,20 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
 
   property("and") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
-    
-    and(left, right) == left && right
+
+    and(left, right) == (left && right)
   }
 
   property("or") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
-    
+
     or(left, right) == left || right
-  }   
+  }
 
 end BooleanOperatorsSpecification
 
-object FermatNumbersSpecification extends Properties("Fermat Numbers"):
+object FermatNumbersSpecification extends Properties("Fermat Numbers") :
+
   import `Fermat Numbers`._
   import arbitraries.given Arbitrary[Int]
 
@@ -48,16 +50,20 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
 
   property("fermatNumber") = forAll { (n: Int) =>
     fermatNumber(n) == Math.pow(2, Math.pow(2, 2)) + 1
-  }  
+  }
 
 end FermatNumbersSpecification
 
-object LookAndAaSequenceSpecification extends Properties("Look-and-say Sequence"):
+object LookAndAaSequenceSpecification extends Properties("Look-and-say Sequence") :
+
   import `Look-and-say Sequence`._
   import arbitraries.given Arbitrary[Int]
 
-  property("fermatNumber") = forAll { (n: Int) =>
-    lookAndSaySequenceElement(n) == 42
-  }  
+
+  property("lookAndSaySequenceElement") = forAll { (n: Int) =>
+    val lookAndSaySequence: Vector[BigInt] = Vector(1, 11, 21, 1211, 111221, 312211, 13112221, 1113213211, BigInt("31131211131221"), BigInt("13211311123113112211"), BigInt("11131221133112132113212221"), BigInt("3113112221232112111312211312113211"))
+
+    lookAndSaySequenceElement(n) == lookAndSaySequence(n)
+  }
 
 end LookAndAaSequenceSpecification
