@@ -14,7 +14,7 @@ object Homework:
 
     val numer = x / g
     val denom = y / g
-
+    def canEqual(a: Any) = a.isInstanceOf[Rational]
     // Defines an external name for a definition
     @targetName("less than")
     // Annotation on a method definition allows using the method as an infix operation
@@ -63,8 +63,13 @@ object Homework:
 
     private lazy val g = gcd(abs(x), y)
 
-    override def equals(other: Any): Boolean = other match {
-      case that: Rational => ((this.numer == that.numer) && (this.denom == that.denom))
+    override def equals(that: Any): Boolean =
+      that match {
+          case that: Rational => {
+        that.canEqual(this) &&
+          this.numer == that.numer &&
+          this.denom == that.denom
+          }
       case _ => false
     }
 
